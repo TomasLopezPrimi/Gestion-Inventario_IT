@@ -23,13 +23,17 @@ import {
 
 const NuevaGestion = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  //Las tablas que traemos con props, para poder usar este mismo componente en cualquiera de las tres
   const [gestiones, setGestiones] = useState(props.gestiones);
 
+  //El form debería ser con un map de todas las columnas de "gestiones"
   const [formData, setFormData] = useState({
     nombre: '',
     descripcion: '',
   });
 
+//Setea los datos del form
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -38,20 +42,21 @@ const NuevaGestion = (props) => {
     });
   };
 
+//Agrega una linea a la tabla una vez confirmado
   const handleSubmit = () => {
     const newGestion = {
-      id: gestiones.length + 1,
+      id: gestiones.length + 1, //esto podría ser util
       ...formData,
     };
     setGestiones([...gestiones, newGestion]);
-    setFormData({ nombre: '', descripcion: '' });
-    onClose();
+    setFormData({ nombre: '', descripcion: '' });  //deja vacío el form
+    onClose(); 
   };
 
   return (
     <div>
-      <Button onClick={onOpen} mb={4}>
-        Agregar Gestión
+      <Button onClick={onOpen} mb={7}>
+        Crear nueva gestión
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>

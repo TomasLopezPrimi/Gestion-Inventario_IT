@@ -25,8 +25,8 @@ export default function Dashboard() {
         setActiveSubTab={setActiveSubTab}
       />
       <Box flex="1" p={5} overflowY="auto">
-        <MainContent activeTab={activeTab} activeSubTab={activeSubTab} />
         <NuevaGestion gestiones={gestiones}/>
+        <MainContent activeTab={activeTab} activeSubTab={activeSubTab} />
       </Box>
     </Flex>
   )
