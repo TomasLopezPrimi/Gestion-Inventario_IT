@@ -24,14 +24,18 @@ import {
 const NuevaGestion = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  //Las tablas que traemos con props, para poder usar este mismo componente en cualquiera de las tres
-  const [gestiones, setGestiones] = useState(props.gestiones);
+//Nombramos como gestiones por practicidad, depende el uso se puede modificar
+  const setGestiones = props.setData
+  const gestiones = props.data
 
-  //El form debería ser con un map de todas las columnas de "gestiones"
-  const [formData, setFormData] = useState({
-    nombre: '',
-    descripcion: '',
+
+  const [formData, setFormData] = useState(() => {
+    return Object.keys(gestiones).reduce((acc, key) => {
+      acc[key] = ''; // Establecer el valor vacío para cada clave
+      return acc;
+    }, {});
   });
+
 
 //Setea los datos del form
   const handleChange = (e) => {
@@ -49,9 +53,15 @@ const NuevaGestion = (props) => {
       ...formData,
     };
     setGestiones([...gestiones, newGestion]);
-    setFormData({ nombre: '', descripcion: '' });  //deja vacío el form
-    onClose(); 
+    setFormData();  //deja vacío el form
+    //guardar info a un txt formato json
+    onClose();
+
   };
+
+  console.log((Object.keys(gestiones[0])[0]))
+
+  const columnas = (Object.keys(gestiones[0]))
 
   return (
     <div>
@@ -65,8 +75,21 @@ const NuevaGestion = (props) => {
           <ModalHeader>Nueva Gestión</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <FormControl>
-              <FormLabel>Nombre</FormLabel>
+            {columnas.map((columna, index) => (
+                <FormControl key={index} mt={index === 0 ? 0 : 4}>
+                  <FormLabel>{columna.charAt(0).toUpperCase() + columna.slice(1)}</FormLabel>
+                  <Input
+                    type="text"
+                    name={columna}
+                    value={formData[columna]}
+                    onChange={handleChange}
+                  />
+                </FormControl>
+            ))}
+
+
+            {/* <FormControl>
+              <FormLabel> </FormLabel>
               <Input
                 type="text"
                 name="nombre"
@@ -82,7 +105,7 @@ const NuevaGestion = (props) => {
                 value={formData.descripcion}
                 onChange={handleChange}
               />
-            </FormControl>
+            </FormControl> */}
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={handleSubmit}>

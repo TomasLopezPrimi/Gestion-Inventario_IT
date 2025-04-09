@@ -3,27 +3,9 @@ import { Table, Thead, Tbody, Tr, Th, Td, TableContainer } from '@chakra-ui/reac
 
 
 
-export default function TableComponent(){
+export default function TableComponent(props){
 
-    // Datos hardcodeados, la idea es que esté vacio y usar setData con los datos exportados dependiendo si es usuarios/equipos o gestiones
-    //La información podría ser pasada por props?
-    const [data, setData] = useState ([
-      { id: 1, name: 'John Doe', age: 28, email: 'john@example.com', id3: "asas",id4: "asas",id5: "asas",id6: "asas",id7: "asas", asdfsafsdfsdfsdfsdfsdf: "asdasd" },
-      { id: 2, name: 'Jane Smith', age: 34, email: 'jane@example.com', id3: "",id4: "asas" },
-      { id: 3, name: 'Sam Johnson', age: 45, email: 'sam@example.com', id3: "",id4: "" },
-    ]);
-
-
-
-    // const addRow = () => {
-    //   const newRow = {
-    //     id: data.length + 1,
-    //     name: 'New Name',
-    //     age: 30,
-    //     email: 'newemail@example.com',
-    //   };
-    //   setData([...data, newRow]);
-    // };
+ const data = props.data
   
     return (
       <TableContainer>
