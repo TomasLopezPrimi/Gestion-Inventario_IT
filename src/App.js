@@ -7,7 +7,7 @@ import { useState } from "react"
 export default function Dashboard() {
 
   //Que significa? Sirve? 
-  const [activeTab, setActiveTab] = useState("gestiones")
+  const [activeTab, setActiveTab] = useState("")
   const [activeSubTab, setActiveSubTab] = useState("nueva-gestion")
 
 

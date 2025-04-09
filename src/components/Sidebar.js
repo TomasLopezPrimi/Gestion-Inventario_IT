@@ -53,7 +53,7 @@ export default function Sidebar({ activeTab, setActiveTab, activeSubTab, setActi
           px={5}
           py={3}
         >
-          Gestiones
+          Tablas
         </Button>
       
 
@@ -73,7 +73,7 @@ export default function Sidebar({ activeTab, setActiveTab, activeSubTab, setActi
               py={2}
               fontSize="sm"
             >
-              Nueva gestión
+              Gestiones
             </Button>
             <Button
               leftIcon={<Icon as={FaExchangeAlt} boxSize={3} />}
@@ -89,7 +89,7 @@ export default function Sidebar({ activeTab, setActiveTab, activeSubTab, setActi
               py={2}
               fontSize="sm"
             >
-              Reasignar
+              Usuarios
             </Button>
             <Button
               leftIcon={<Icon as={FaChartBar} boxSize={3} />}
@@ -105,12 +105,12 @@ export default function Sidebar({ activeTab, setActiveTab, activeSubTab, setActi
               py={2}
               fontSize="sm"
             >
-              Reporte
+              Equipos
             </Button>
           </VStack>
         </Collapse>
 
-        <Button
+        {/* <Button
           leftIcon={<Icon as={FaUsers} />}
           variant="ghost"
           color="white"
@@ -142,7 +142,7 @@ export default function Sidebar({ activeTab, setActiveTab, activeSubTab, setActi
           py={3}
         >
           Equipos
-        </Button>
+        </Button> */}
       </VStack>
     </Box>
   )

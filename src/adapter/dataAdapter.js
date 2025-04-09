@@ -1,7 +1,7 @@
-//Hasta no tener los datos exportados no lo vamos a usar
+//¿Hay que usar un archivo por cada tabla? ¿Rompe algo exportar varias funciones?
 
 // Función para estructurar la información de "Gestiones"
-export default function adaptadorGestiones(data) {
+export function adaptadorGestiones(data) {
     return {
         ID: data.ID || "",
         Movimiento: data.Movimiento || "",
@@ -13,7 +13,7 @@ export default function adaptadorGestiones(data) {
         Origen: data.Origen || "",
         Fecha_In: data.Fecha_In || "",
         Costo_Movimiento: data.Costo_Movimiento || 0,
-        ID_Traking: data.ID_Traking || "",
+        ID_Traking: data.ID_Traking || "Vacio",
         Destino: data.Destino || "",
         Status: data.Status || "",
         Comodato_firmado: data.Comodato_firmado || false,
@@ -24,7 +24,7 @@ export default function adaptadorGestiones(data) {
 }
 
 // Función para estructurar la información de "Usuarios"
-export default function adaptadorUsuarios(data) {
+export function adaptadorUsuarios(data) {
     return {
         Id_Usuario: data.Id_Usuario || "",
         Nombre_Completo: data.Nombre_Completo || "",
@@ -51,7 +51,7 @@ export default function adaptadorUsuarios(data) {
 }
 
 // Función para estructurar la información de "Equipos"
-export default function adaptadorEquipos(data) {
+export function adaptadorEquipos(data) {
     return {
         Id_Equipo: data.Id_Equipo || "",
         Nro_Inventario: data.Nro_Inventario || "",

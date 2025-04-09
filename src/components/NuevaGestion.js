@@ -30,15 +30,20 @@ const NuevaGestion = (props) => {
 
 
   const [formData, setFormData] = useState(() => {
-    return Object.keys(gestiones).reduce((acc, key) => {
-      acc[key] = ''; // Establecer el valor vacío para cada clave
+    // Tuve que darle la validación de gestiones porque el primer form me estaba tirando errores
+    const initialData = gestiones.length > 0 ? gestiones[0] : {};
+    return Object.keys(initialData).reduce((acc, key) => {
+      acc[key] = ''; // Establecer el valor vacío para cada clave. Desde acá podriamos sumarle validación de datos dependiendo de cada "key"
       return acc;
     }, {});
   });
 
 
+
+
 //Setea los datos del form
   const handleChange = (e) => {
+    console.log(formData)
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -48,18 +53,22 @@ const NuevaGestion = (props) => {
 
 //Agrega una linea a la tabla una vez confirmado
   const handleSubmit = () => {
-    const newGestion = {
-      id: gestiones.length + 1, //esto podría ser util
+    const nuevaGestion = {
+      // id: gestiones.length + 1,  // esto podría ser util
       ...formData,
     };
-    setGestiones([...gestiones, newGestion]);
-    setFormData();  //deja vacío el form
+    setGestiones([...gestiones, nuevaGestion]);
+    setFormData(Object.keys(gestiones[0] || {}).reduce((acc, key) => {
+      acc[key] = ''; // Restablecer el valor vacío para cada clave
+      return acc;
+    }, {})); //deja vacío el form
     //guardar info a un txt formato json
+    console.log(gestiones)
     onClose();
 
   };
 
-  console.log((Object.keys(gestiones[0])[0]))
+  
 
   const columnas = (Object.keys(gestiones[0]))
 
@@ -76,7 +85,9 @@ const NuevaGestion = (props) => {
           <ModalCloseButton />
           <ModalBody>
             {columnas.map((columna, index) => (
-                <FormControl key={index} mt={index === 0 ? 0 : 4}>
+                <FormControl key={index} 
+                //mt={index === 0 ? 0 : 4}
+                >
                   <FormLabel>{columna.charAt(0).toUpperCase() + columna.slice(1)}</FormLabel>
                   <Input
                     type="text"
@@ -87,25 +98,6 @@ const NuevaGestion = (props) => {
                 </FormControl>
             ))}
 
-
-            {/* <FormControl>
-              <FormLabel> </FormLabel>
-              <Input
-                type="text"
-                name="nombre"
-                value={formData.nombre}
-                onChange={handleChange}
-              />
-            </FormControl>
-            <FormControl mt={4}>
-              <FormLabel>Descripción</FormLabel>
-              <Input
-                type="text"
-                name="descripcion"
-                value={formData.descripcion}
-                onChange={handleChange}
-              />
-            </FormControl> */}
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
@@ -118,26 +110,6 @@ const NuevaGestion = (props) => {
         </ModalContent>
       </Modal>
 
-      {/* <TableContainer>
-        <Table variant="simple">
-          <Thead>
-            <Tr>
-              <Th>ID</Th>
-              <Th>Nombre</Th>
-              <Th>Descripción</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {gestiones.map((gestion) => (
-              <Tr key={gestion.id}>
-                <Td>{gestion.id}</Td>
-                <Td>{gestion.nombre}</Td>
-                <Td>{gestion.descripcion}</Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer> */}
     </div>
   );
 };
