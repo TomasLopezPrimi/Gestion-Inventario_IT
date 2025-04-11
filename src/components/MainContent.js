@@ -1,15 +1,14 @@
-import { Box, Input } from "@chakra-ui/react"
-import NuevaGestion from "./NuevaGestion"
+import { Box, HStack, Input } from "@chakra-ui/react"
 import TableComponent from "./TableComponent"
 import React from "react"
 import { useState } from "react"
 import {adaptadorGestiones} from "../adapter/dataAdapter"
+import ButtonsContainer from "./ButtonsContainer"
 
 
 export default function MainContent () {
 
 //El contenido de la tabla debería ser distinto dependiendo la página (gestiones, usuarios, equipos)
-//hace falta este archivo o se puede hacer desde App?
 
  // Datos hardcodeados, la idea es que esté vacio y usar setData con los datos exportados dependiendo si es usuarios/equipos o gestiones
     const data = [
@@ -55,8 +54,6 @@ export default function MainContent () {
     //Usamos el adaptador, por ahora sin validación dependiendo que tipo de datos o tabla usemos
     const [dataAdapted, setDataAdapted] = useState(data.map(adaptadorGestiones))
 
-    //Las funciones de agregar/editar/remover que vamos a usar, deberian estar creadas acá (o importadas acá) para luego pasarle al componente de los botones
-    //Por ahora, solo creamos un botón con el componente nueva gestión
 
     //Buscador, por ahora no está funcionando
     const [searchTerm, setSearchTerm] = useState("")
@@ -65,23 +62,28 @@ export default function MainContent () {
       setSearchTerm(event.target.value);
     };
     
+    //No puedo pasar filteredData a la tabla si los botones los uso para hacer modificaciones
+    //Lo que termina pasando es que la info de la tabla no se actualiza con las modificaciones de los botones
     const filteredData = searchTerm
        ? data.filter((item) =>
            item.ID.toLowerCase().includes(searchTerm.toLowerCase())
          )
        : data;
    
+    //
 
     return (
         <Box flex="1" p={5} overflowY="auto">
-            <NuevaGestion data={dataAdapted} setData={setDataAdapted}/>
+            <ButtonsContainer  data={dataAdapted} setData={setDataAdapted}/>
             <Input 
                 placeholder='Buscar'
                 value={searchTerm}
                 onChange={handleSearch}
                 mb={4}
+                htmlSize={50}
+                width='auto'
             />
-            <TableComponent data={filteredData} />
+            <TableComponent data={dataAdapted} />
         </Box>
     )
 }

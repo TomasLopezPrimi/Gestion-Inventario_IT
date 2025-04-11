@@ -20,14 +20,15 @@ import {
   Button,
   useDisclosure,
 } from '@chakra-ui/react';
+import toast from 'react-hot-toast';
 
-const NuevaGestion = (props) => {
+const ButtonComponent = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
 //Nombramos como gestiones por practicidad, depende el uso se puede modificar
   const setGestiones = props.setData
   const gestiones = props.data
-
+  const typeOfButton = props.typeOfButton
 
   const [formData, setFormData] = useState(() => {
     // Tuve que darle la validación de gestiones porque el primer form me estaba tirando errores
@@ -51,8 +52,10 @@ const NuevaGestion = (props) => {
     });
   };
 
-//Agrega una linea a la tabla una vez confirmado
+//Agrega una linea a la tabla una vez confirmado. Con una validación dependiendo el tipo de botón, por ahora solo el boton de crear nueva
   const handleSubmit = () => {
+
+    if (typeOfButton === "Crear nueva") {
     const nuevaGestion = {
       // id: gestiones.length + 1,  // esto podría ser util
       ...formData,
@@ -65,7 +68,11 @@ const NuevaGestion = (props) => {
     //guardar info a un txt formato json
     console.log(gestiones)
     onClose();
-
+  }else {
+    console.log("Error")
+    toast.error("Todavia sin implementar")
+    onClose()
+  }
   };
 
   
@@ -74,14 +81,16 @@ const NuevaGestion = (props) => {
 
   return (
     <div>
-      <Button onClick={onOpen} mb={7}>
-        Crear nueva gestión
+      <Button 
+        onClick={onOpen} 
+        mb={7}>
+        {typeOfButton}
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Nueva Gestión</ModalHeader>
+          <ModalHeader>{typeOfButton} </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             {columnas.map((columna, index) => (
@@ -114,4 +123,4 @@ const NuevaGestion = (props) => {
   );
 };
 
-export default NuevaGestion;
+export default ButtonComponent;
