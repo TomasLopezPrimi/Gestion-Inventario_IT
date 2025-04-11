@@ -4,9 +4,9 @@ import Sidebar from "./components/Sidebar"
 import MainContent from "./components/MainContent"
 import { useState } from "react"
 
-export default function Dashboard() {
+export default function App() {
 
-  //Que significa? Sirve? 
+  
   const [activeTab, setActiveTab] = useState("")
   const [activeSubTab, setActiveSubTab] = useState("nueva-gestion")
 

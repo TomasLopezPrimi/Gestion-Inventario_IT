@@ -1,9 +1,10 @@
-import { Box } from "@chakra-ui/react"
+import { Box, Input } from "@chakra-ui/react"
 import NuevaGestion from "./NuevaGestion"
 import TableComponent from "./TableComponent"
 import React from "react"
 import { useState } from "react"
 import {adaptadorGestiones} from "../adapter/dataAdapter"
+
 
 export default function MainContent () {
 
@@ -54,10 +55,34 @@ export default function MainContent () {
     //Usamos el adaptador, por ahora sin validación dependiendo que tipo de datos o tabla usemos
     const [dataAdapted, setDataAdapted] = useState(data.map(adaptadorGestiones))
 
+    //Las funciones de agregar/editar/remover que vamos a usar, deberian estar creadas acá (o importadas acá) para luego pasarle al componente de los botones
+    //Por ahora, solo creamos un botón con el componente nueva gestión
+
+    //Buscador, por ahora no está funcionando
+    const [searchTerm, setSearchTerm] = useState("")
+
+    const handleSearch = (event) => {
+      setSearchTerm(event.target.value);
+    };
+    
+    const filteredData = searchTerm
+       ? data.filter((item) =>
+           item.ID.toLowerCase().includes(searchTerm.toLowerCase())
+         )
+       : data;
+   
+
     return (
         <Box flex="1" p={5} overflowY="auto">
             <NuevaGestion data={dataAdapted} setData={setDataAdapted}/>
-            <TableComponent data={dataAdapted} />
+            <Input 
+                placeholder='Buscar'
+                value={searchTerm}
+                onChange={handleSearch}
+                mb={4}
+            />
+            <TableComponent data={filteredData} />
         </Box>
     )
 }
+

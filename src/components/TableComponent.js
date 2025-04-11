@@ -5,7 +5,7 @@ import { Table, Thead, Tbody, Tr, Th, Td, TableContainer } from '@chakra-ui/reac
 export default function TableComponent(props){
 
  const data = props.data
-  
+
     return (
       <TableContainer>
         <Table size="m" variant="striped" bgGradient="linear-gradient(90deg, rgba(1,134,115,1) 35%, rgba(0,212,255,1) 37%) 100%)" >
