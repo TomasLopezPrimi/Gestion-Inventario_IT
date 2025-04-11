@@ -5,7 +5,7 @@ Pendiente:
 
 - Buscador en la tabla
 - Validación de datos en el form dependiendo de la info
-- Crear las paginas
+- Crear las paginas (creado el AppRoute pero solo está creada la principal)
 - Asociarlo a un google sheets (uno de prueba primero)
 - Validación al iniciar la app
 - Hacerlo responsive

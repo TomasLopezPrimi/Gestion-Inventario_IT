@@ -1,8 +1,9 @@
 
-import { Box, Flex } from "@chakra-ui/react"
+import {Flex } from "@chakra-ui/react"
 import Sidebar from "./components/Sidebar"
-import MainContent from "./components/MainContent"
 import { useState } from "react"
+import { BrowserRouter } from "react-router-dom"
+import AppRouter from "./routes/AppRoutes"
 
 export default function App() {
 
@@ -12,6 +13,7 @@ export default function App() {
 
 
   return (
+    <BrowserRouter>
     <Flex h="100vh" bg="gray.50">
       <Sidebar
         activeTab={activeTab}
@@ -19,8 +21,10 @@ export default function App() {
         activeSubTab={activeSubTab}
         setActiveSubTab={setActiveSubTab}
       />
-      <MainContent activeTab={activeTab} activeSubTab={activeSubTab} />
+      
+      <AppRouter />
       
     </Flex>
+    </BrowserRouter>
   )
 }
