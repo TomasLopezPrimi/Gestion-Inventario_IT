@@ -1,6 +1,6 @@
 import { Table, Thead, Tbody, Tr, Th, Td, TableContainer } from '@chakra-ui/react';
 
-
+//Muestra la tabla con el objeto pasado por props (no hay funcionalidad en este componente)
 
 export default function TableComponent(props){
 
@@ -8,7 +8,7 @@ export default function TableComponent(props){
 
     return (
       <TableContainer>
-        <Table size="m" variant="striped" bgGradient="linear-gradient(90deg, rgba(1,134,115,1) 35%, rgba(0,212,255,1) 37%) 100%)" >
+        <Table size="m" variant="striped" >
           <Thead>
             <Tr>
               {data.length > 0 && Object.keys(data[0]).map((title) => (

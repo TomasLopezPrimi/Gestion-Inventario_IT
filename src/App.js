@@ -14,14 +14,13 @@ export default function App() {
 
   return (
     <BrowserRouter>
-    <Flex h="100vh" bg="gray.50">
+    <Flex h="100vh" >
       <Sidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         activeSubTab={activeSubTab}
         setActiveSubTab={setActiveSubTab}
       />
-      
       <AppRouter />
       
     </Flex>

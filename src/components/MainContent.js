@@ -1,16 +1,18 @@
-import { Box, HStack, Input } from "@chakra-ui/react"
+import { Box, HStack, Flex, StackDivider } from "@chakra-ui/react"
 import TableComponent from "./TableComponent"
 import React from "react"
 import { useState } from "react"
 import {adaptadorGestiones} from "../adapter/dataAdapter"
 import ButtonsContainer from "./ButtonsContainer"
+import Buscador from "./Buscador"
+import { ColorModeSwitcher } from "./ColorModeSwitcher"
 
 
 export default function MainContent () {
 
-//El contenido de la tabla debería ser distinto dependiendo la página (gestiones, usuarios, equipos)
+    //El contenido de la tabla debería ser distinto dependiendo la página (gestiones, usuarios, equipos)
 
- // Datos hardcodeados, la idea es que esté vacio y usar setData con los datos exportados dependiendo si es usuarios/equipos o gestiones
+    // Datos hardcodeados, la idea es que esté vacio y usar setData con los datos exportados dependiendo si es usuarios/equipos o gestiones
     const data = [
         {   
             ID: "ID",
@@ -54,35 +56,15 @@ export default function MainContent () {
     //Usamos el adaptador, por ahora sin validación dependiendo que tipo de datos o tabla usemos
     const [dataAdapted, setDataAdapted] = useState(data.map(adaptadorGestiones))
 
-
-    //Buscador, por ahora no está funcionando
-    const [searchTerm, setSearchTerm] = useState("")
-
-    const handleSearch = (event) => {
-      setSearchTerm(event.target.value);
-    };
-    
-    //No puedo pasar filteredData a la tabla si los botones los uso para hacer modificaciones
-    //Lo que termina pasando es que la info de la tabla no se actualiza con las modificaciones de los botones
-    const filteredData = searchTerm
-       ? data.filter((item) =>
-           item.ID.toLowerCase().includes(searchTerm.toLowerCase())
-         )
-       : data;
-   
-    //
+    //Por ahora tenemos el componente Buscador pero resta definir la forma más óptima/practica de buscar
 
     return (
-        <Box flex="1" p={5} overflowY="auto">
-            <ButtonsContainer  data={dataAdapted} setData={setDataAdapted}/>
-            <Input 
-                placeholder='Buscar'
-                value={searchTerm}
-                onChange={handleSearch}
-                mb={4}
-                htmlSize={50}
-                width='auto'
-            />
+        <Box flex="1" p={5} overflowY="auto" >
+            <HStack spacing={15} divider={<StackDivider />} >  
+                <ButtonsContainer  data={dataAdapted} setData={setDataAdapted}/>
+                <Buscador />
+                <ColorModeSwitcher />
+            </HStack>
             <TableComponent data={dataAdapted} />
         </Box>
     )

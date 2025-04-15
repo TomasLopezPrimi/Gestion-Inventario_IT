@@ -1,6 +1,6 @@
 "use client"
 
-import { Box, Flex, VStack, Icon, Text, Collapse, useDisclosure, Button } from "@chakra-ui/react"
+import { Box, Flex, VStack, Icon, Text, Collapse, useDisclosure, Button, useColorModeValue } from "@chakra-ui/react"
 import {
   FaClipboardList,
   FaUsers,
@@ -13,6 +13,11 @@ import {
 } from "react-icons/fa"
 
 export default function Sidebar({ activeTab, setActiveTab, activeSubTab, setActiveSubTab }) {
+
+  //Estilos especificos para modo claro/oscuro
+  const bgColor = useColorModeValue('teal.500', 'teal.800');
+  const textColor = useColorModeValue('white', 'whiteAlpha.900');
+
   const { isOpen, onToggle } = useDisclosure({
     defaultIsOpen: activeTab === "gestiones",
   })
@@ -30,7 +35,7 @@ export default function Sidebar({ activeTab, setActiveTab, activeSubTab, setActi
   }
 
   return (
-    <Box w="250px" bg="teal.500" color="white" h="100vh" py={5} boxShadow="lg">
+    <Box w="250px" bg={bgColor} color={textColor} h="100vh" py={5} boxShadow="lg">
       <Flex align="center" justify="center" mb={8} px={5}>
         <Text fontSize="2xl" fontWeight="bold">
           Inventario
@@ -43,7 +48,7 @@ export default function Sidebar({ activeTab, setActiveTab, activeSubTab, setActi
           rightIcon={activeTab === "gestiones" ? <Icon as={FaChevronUp} /> : <Icon as={FaChevronDown} />}
           justifyContent="space-between"
           variant="ghost"
-          color="white"
+          color={textColor}
           _hover={{ bg: "teal.600" }}
           _active={{ bg: "teal.700" }}
           bg={activeTab === "gestiones" ? "teal.600" : "transparent"}

@@ -13,7 +13,7 @@ export default function AppRouter() {
         </Routes>
     )
 }
-    // Ejemplos de otro proyecto:
+    // Ejemplos de otro proyecto para tener a mano:
     //     <Routes>
     //         <Route path='/' element={<ItemListContainer greeting={'Listado productos'} />} />
     //         <Route path='/category/:categoryId' element={<ItemListContainer />} />

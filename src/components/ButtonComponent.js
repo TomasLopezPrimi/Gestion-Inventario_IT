@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableContainer,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -25,11 +18,12 @@ import toast from 'react-hot-toast';
 const ButtonComponent = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-//Nombramos como gestiones por practicidad, depende el uso se puede modificar
+  //Nombramos como gestiones por practicidad, depende el uso se puede modificar
   const setGestiones = props.setData
   const gestiones = props.data
   const typeOfButton = props.typeOfButton
 
+  //Inicialización de los datos del form
   const [formData, setFormData] = useState(() => {
     // Tuve que darle la validación de gestiones porque el primer form me estaba tirando errores
     const initialData = gestiones.length > 0 ? gestiones[0] : {};
@@ -40,9 +34,7 @@ const ButtonComponent = (props) => {
   });
 
 
-
-
-//Setea los datos del form
+  //Setea los datos del form
   const handleChange = (e) => {
     console.log(formData)
     const { name, value } = e.target;
@@ -52,38 +44,37 @@ const ButtonComponent = (props) => {
     });
   };
 
-//Agrega una linea a la tabla una vez confirmado. Con una validación dependiendo el tipo de botón, por ahora solo el boton de crear nueva
+
+  //Agrega una linea a la tabla una vez confirmado. Con una validación dependiendo el tipo de botón, por ahora solo el boton de crear nueva
   const handleSubmit = () => {
 
     if (typeOfButton === "Crear nueva") {
-    const nuevaGestion = {
-      // id: gestiones.length + 1,  // esto podría ser util
-      ...formData,
-    };
-    setGestiones([...gestiones, nuevaGestion]);
-    setFormData(Object.keys(gestiones[0] || {}).reduce((acc, key) => {
-      acc[key] = ''; // Restablecer el valor vacío para cada clave
-      return acc;
-    }, {})); //deja vacío el form
-    //guardar info a un txt formato json
-    console.log(gestiones)
-    onClose();
-  }else {
-    console.log("Error")
-    toast.error("Todavia sin implementar")
-    onClose()
-  }
+      const nuevaGestion = {
+        // id: gestiones.length + 1,  // esto podría ser util
+        ...formData,
+      };
+      setGestiones([...gestiones, nuevaGestion]);
+      setFormData(Object.keys(gestiones[0] || {}).reduce((acc, key) => {
+        acc[key] = ''; // Restablecer el valor vacío para cada clave
+        return acc;
+        }, {})
+      ); //deja vacío el form
+      //guardar info a un txt formato json
+      console.log(gestiones)
+      onClose();
+    } else {
+      console.log("Error")
+      toast.error("Todavia sin implementar")
+      onClose()
+    }
   };
 
-  
-
+  //Creamos la constante columnas, para usar en los titulos del form
   const columnas = (Object.keys(gestiones[0]))
 
   return (
     <div>
-      <Button 
-        onClick={onOpen} 
-        mb={7}>
+      <Button onClick={onOpen}>
         {typeOfButton}
       </Button>
 

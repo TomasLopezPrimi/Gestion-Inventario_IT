@@ -6,9 +6,10 @@ const ButtonsContainer = (props) => {
     const data = props.data
     const setData = props.setData
 
+    //Las funciones de cada botón deberian ir acá y pasarlas como prop o en el componente boton? 
 
     return (
-    <HStack m={5} spacing={7}>
+    <HStack spacing={7}>
         <ButtonComponent data={data} setData={setData} typeOfButton={"Crear nueva"} />
         <ButtonComponent data={data} setData={setData} typeOfButton={"Modificar"}/>
         <ButtonComponent data={data} setData={setData} typeOfButton={"Eliminar"}/>
