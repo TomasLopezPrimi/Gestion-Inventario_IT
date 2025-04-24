@@ -19,14 +19,14 @@ export default function Sidebar({ activeTab, setActiveTab, activeSubTab, setActi
   const textColor = useColorModeValue('white', 'whiteAlpha.900');
 
   const { isOpen, onToggle } = useDisclosure({
-    defaultIsOpen: activeTab === "gestiones",
+    defaultIsOpen: activeTab === "Tablas",
   })
 
   const handleTabClick = (tab) => {
     setActiveTab(tab)
-    if (tab === "gestiones") {
+    if (tab === "Tablas") {
       onToggle()
-      setActiveSubTab("nueva-gestion")
+      setActiveSubTab("Gestiones")
     }
   }
 
@@ -45,14 +45,14 @@ export default function Sidebar({ activeTab, setActiveTab, activeSubTab, setActi
       <VStack spacing={1} align="stretch">
         <Button
           leftIcon={<Icon as={FaClipboardList} />}
-          rightIcon={activeTab === "gestiones" ? <Icon as={FaChevronUp} /> : <Icon as={FaChevronDown} />}
+          rightIcon={activeTab === "Tablas" ? <Icon as={FaChevronUp} /> : <Icon as={FaChevronDown} />}
           justifyContent="space-between"
           variant="ghost"
           color={textColor}
           _hover={{ bg: "teal.600" }}
           _active={{ bg: "teal.700" }}
-          bg={activeTab === "gestiones" ? "teal.600" : "transparent"}
-          onClick={() => handleTabClick("gestiones")}
+          bg={activeTab === "Tablas" ? "teal.600" : "transparent"}
+          onClick={() => handleTabClick("Tablas")}
           borderRadius={0}
           w="100%"
           px={5}
@@ -70,8 +70,8 @@ export default function Sidebar({ activeTab, setActiveTab, activeSubTab, setActi
               color="white"
               _hover={{ bg: "teal.700" }}
               _active={{ bg: "teal.800" }}
-              bg={activeSubTab === "nueva-gestion" ? "teal.700" : "transparent"}
-              onClick={() => handleSubTabClick("nueva-gestion")}
+              bg={activeSubTab === "Gestiones" ? "teal.700" : "transparent"}
+              onClick={() => handleSubTabClick("Gestiones")}
               justifyContent="flex-start"
               borderRadius={0}
               w="100%"
@@ -86,8 +86,8 @@ export default function Sidebar({ activeTab, setActiveTab, activeSubTab, setActi
               color="white"
               _hover={{ bg: "teal.700" }}
               _active={{ bg: "teal.800" }}
-              bg={activeSubTab === "reasignar" ? "teal.700" : "transparent"}
-              onClick={() => handleSubTabClick("reasignar")}
+              bg={activeSubTab === "Usuarios" ? "teal.700" : "transparent"}
+              onClick={() => handleSubTabClick("Usuarios")}
               justifyContent="flex-start"
               borderRadius={0}
               w="100%"
@@ -102,8 +102,8 @@ export default function Sidebar({ activeTab, setActiveTab, activeSubTab, setActi
               color="white"
               _hover={{ bg: "teal.700" }}
               _active={{ bg: "teal.800" }}
-              bg={activeSubTab === "reporte" ? "teal.700" : "transparent"}
-              onClick={() => handleSubTabClick("reporte")}
+              bg={activeSubTab === "Equipos" ? "teal.700" : "transparent"}
+              onClick={() => handleSubTabClick("Equipos")}
               justifyContent="flex-start"
               borderRadius={0}
               w="100%"

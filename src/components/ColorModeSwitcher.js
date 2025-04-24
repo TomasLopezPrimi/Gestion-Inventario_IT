@@ -32,6 +32,7 @@ export const theme = extendTheme({
         variants: {
           dark: {
             bg: 'gray.500', // Color de fondo para el modo oscuro
+            color: "yellow"
           },
         },
       },

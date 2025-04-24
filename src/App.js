@@ -9,7 +9,7 @@ export default function App() {
 
   
   const [activeTab, setActiveTab] = useState("")
-  const [activeSubTab, setActiveSubTab] = useState("nueva-gestion")
+  const [activeSubTab, setActiveSubTab] = useState("Gestiones")
 
 
   return (
