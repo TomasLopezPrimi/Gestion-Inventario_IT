@@ -28,7 +28,9 @@ const ButtonComponent = (props) => {
     // Tuve que darle la validación de gestiones porque el primer form me estaba tirando errores
     const initialData = gestiones.length > 0 ? gestiones[0] : {};
     return Object.keys(initialData).reduce((acc, key) => {
-      acc[key] = ''; // Establecer el valor vacío para cada clave. Desde acá podriamos sumarle validación de datos dependiendo de cada "key"
+      if (key !== "id") {  
+      acc[key] = '';
+    } // Establecer el valor vacío para cada clave. Desde acá podriamos sumarle validación de datos dependiendo de cada "key"
       return acc;
     }, {});
   });
@@ -50,7 +52,7 @@ const ButtonComponent = (props) => {
 
     if (typeOfButton === "Crear nueva") {
       const nuevaGestion = {
-        // id: gestiones.length + 1,  // esto podría ser util
+        id: gestiones.length + 1,  // esto podría ser util
         ...formData,
       };
       setGestiones([...gestiones, nuevaGestion]);

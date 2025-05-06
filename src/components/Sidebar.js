@@ -1,16 +1,15 @@
-"use client"
+
 
 import { Box, Flex, VStack, Icon, Text, Collapse, useDisclosure, Button, useColorModeValue } from "@chakra-ui/react"
 import {
   FaClipboardList,
-  FaUsers,
-  FaLaptop,
   FaPlus,
   FaExchangeAlt,
   FaChartBar,
   FaChevronDown,
   FaChevronUp,
 } from "react-icons/fa"
+import { Link } from "react-router-dom";
 
 export default function Sidebar({ activeTab, setActiveTab, activeSubTab, setActiveSubTab }) {
 
@@ -32,11 +31,12 @@ export default function Sidebar({ activeTab, setActiveTab, activeSubTab, setActi
 
   const handleSubTabClick = (subTab) => {
     setActiveSubTab(subTab)
+
   }
 
   return (
     <Box w="250px" bg={bgColor} color={textColor} h="100vh" py={5} boxShadow="lg">
-      <Flex align="center" justify="center" mb={8} px={5}>
+      <Flex align="center" justify="center" mb={8} px={5} as={Link} to='/'>
         <Text fontSize="2xl" fontWeight="bold">
           Inventario
         </Text>
@@ -77,6 +77,8 @@ export default function Sidebar({ activeTab, setActiveTab, activeSubTab, setActi
               w="100%"
               py={2}
               fontSize="sm"
+              as={Link}
+              to="/gestiones"
             >
               Gestiones
             </Button>
@@ -93,6 +95,8 @@ export default function Sidebar({ activeTab, setActiveTab, activeSubTab, setActi
               w="100%"
               py={2}
               fontSize="sm"
+              as={Link}
+              to="/usuarios"
             >
               Usuarios
             </Button>
@@ -109,6 +113,8 @@ export default function Sidebar({ activeTab, setActiveTab, activeSubTab, setActi
               w="100%"
               py={2}
               fontSize="sm"
+              as={Link}
+              to="/equipos"
             >
               Equipos
             </Button>

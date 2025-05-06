@@ -1,11 +1,15 @@
-import { Box, HStack, Flex, StackDivider } from "@chakra-ui/react"
-import TableComponent from "./TableComponent"
+//Bibliotecas
 import React from "react"
 import { useState } from "react"
+import { Box, HStack, StackDivider } from "@chakra-ui/react"
+
+//Componentes
+import TableComponent from "./TableComponent"
 import {adaptadorGestiones} from "../adapter/dataAdapter"
 import ButtonsContainer from "./ButtonsContainer"
 import Buscador from "./Buscador"
 import { ColorModeSwitcher } from "./ColorModeSwitcher"
+
 
 
 export default function MainContent () {

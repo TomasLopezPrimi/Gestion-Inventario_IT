@@ -7,8 +7,8 @@ export default function TableComponent(props){
  const data = props.data
 
     return (
-      <TableContainer>
-        <Table size="m" variant="striped" >
+      <TableContainer m={7}>
+        <Table size="sm" variant="striped" colorScheme='teal'>
           <Thead>
             <Tr>
               {data.length > 0 && Object.keys(data[0]).map((title) => (
