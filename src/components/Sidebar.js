@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa"
 import { Link } from "react-router-dom";
 
+
 export default function Sidebar({ activeTab, setActiveTab, activeSubTab, setActiveSubTab }) {
 
   //Estilos especificos para modo claro/oscuro
@@ -120,40 +121,6 @@ export default function Sidebar({ activeTab, setActiveTab, activeSubTab, setActi
             </Button>
           </VStack>
         </Collapse>
-
-        {/* <Button
-          leftIcon={<Icon as={FaUsers} />}
-          variant="ghost"
-          color="white"
-          _hover={{ bg: "teal.600" }}
-          _active={{ bg: "teal.700" }}
-          bg={activeTab === "usuarios" ? "teal.600" : "transparent"}
-          onClick={() => handleTabClick("usuarios")}
-          justifyContent="flex-start"
-          borderRadius={0}
-          w="100%"
-          px={5}
-          py={3}
-        >
-          Usuarios
-        </Button>
-
-        <Button
-          leftIcon={<Icon as={FaLaptop} />}
-          variant="ghost"
-          color="white"
-          _hover={{ bg: "teal.600" }}
-          _active={{ bg: "teal.700" }}
-          bg={activeTab === "equipos" ? "teal.600" : "transparent"}
-          onClick={() => handleTabClick("equipos")}
-          justifyContent="flex-start"
-          borderRadius={0}
-          w="100%"
-          px={5}
-          py={3}
-        >
-          Equipos
-        </Button> */}
       </VStack>
     </Box>
   )

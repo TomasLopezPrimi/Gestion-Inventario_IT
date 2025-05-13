@@ -1,8 +1,8 @@
-//¿Hay que usar un archivo por cada tabla? ¿Rompe algo exportar varias funciones?
-
 // Función para estructurar la información de "Gestiones"
 export function adaptadorGestiones(data) {
     return {
+        //Selector: `<Checkbox id=${data.ID}>Checkbox</Checkbox>`,
+        Selector: data.selector || "selector",
         ID: data.ID || "",
         Movimiento: data.Movimiento || "",
         Nro_Inventario: data.Nro_Inventario || "",
