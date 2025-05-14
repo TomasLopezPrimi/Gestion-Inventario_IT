@@ -19,14 +19,14 @@ export default function MainContent (props) {
     const table = props.table ? props.table : "gestiones"  // Gestiones por defecto
     
     const [dataSheet, setDataSheet] = useState([]); // luego del fetch queda en formato array y otro array por linea -> [fila[columna]]
-    // const [dataAdapted, setDataAdapted] = useState([])    
+    const [dataAdapted, setDataAdapted] = useState([])    
 
     useEffect(() => {
         const fetchData = async () => {
           try {
             const data = await GetContentSheet(table);
             setDataSheet(data);
-            //setDataAdapted(data.map(fila => adaptadorGestiones(fila)))
+            setDataAdapted(data.map(fila => adaptadorGestiones(fila)))
           } catch (err) {
             console.error(err);
           }
@@ -46,7 +46,7 @@ export default function MainContent (props) {
                     {/* <ButtonsContainer  data={dataAdapted} setData={setDataAdapted}/> */}
                     <Buscador />
                 </HStack>
-                <TableComponent data={dataSheet} />
+                <TableComponent data={dataAdapted} />
         </Box>
     )
 }

@@ -1,5 +1,4 @@
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 
 
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID
@@ -61,8 +60,6 @@ function handleAuthClick(setAuth) {
         toast.success("¡Iniciaste sesión con éxito!")
     setAuth(true)
   };
-
-  //Lo de abajo por ahora no lo estamos usando ya que no estamos dejando que pidan permisos
 
   if (gapi.client.getToken() === null) {
     // Prompt the user to select a Google Account and ask for consent to share their data

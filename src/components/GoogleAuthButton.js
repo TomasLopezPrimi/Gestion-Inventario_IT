@@ -7,7 +7,6 @@ import {
   handleSignoutClick,
   }
   from "../google/auth"
-import { Link } from 'react-router-dom';
 
 const GoogleAuthButton = (prop) => {
   const setAuth = prop.setAuth

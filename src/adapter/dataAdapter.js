@@ -1,25 +1,25 @@
 // Función para estructurar la información de "Gestiones"
+//Selector: `<Checkbox id=${data.ID}>Checkbox</Checkbox>`,
 export function adaptadorGestiones(data) {
     return {
-        //Selector: `<Checkbox id=${data.ID}>Checkbox</Checkbox>`,
-        Selector: data.selector || "selector",
-        ID: data.ID || "",
-        Movimiento: data.Movimiento || "",
-        Nro_Inventario: data.Nro_Inventario || "",
-        Nro_Serie: data.Nro_Serie || "",
-        Marca: data.Marca || "",
-        Modelo: data.Modelo || "",
-        Tipo_de_Dispositivo: data.Tipo_de_Dispositivo || "",
-        Origen: data.Origen || "",
-        Fecha_In: data.Fecha_In || "",
-        Costo_Movimiento: data.Costo_Movimiento || 0,
-        ID_Traking: data.ID_Traking || "Vacio",
-        Destino: data.Destino || "",
-        Status: data.Status || "",
-        Comodato_firmado: data.Comodato_firmado || false,
-        Observaciones: data.Observaciones || "",
-        LinkWS: data.LinkWS || "",
-        Link_Tracking: data.Link_Tracking || ""
+        Selector: "Selector",
+        ID: data[0] || "-",
+        Movimiento: data[1] || "-",
+        Nro_Inventario: data[2] || "-",
+        Nro_Serie: data[3] || "-",
+        Marca: data[4] || "-",
+        Modelo: data[5] || "-",
+        Tipo_de_Dispositivo: data[6] || "-",
+        Origen: data[7] || "-",
+        Fecha_In: data[8] || "-",
+        Costo_Movimiento: data[9] || 0,
+        ID_Traking: data[10] || "Vacio",
+        Destino: data[11] || "-",
+        Status: data[12] || "-",
+        Comodato_firmado: data[13] ? "Sí" : "No",
+        Observaciones: data[14] || "-",
+        LinkWS: data[15] || "-",
+        Link_Tracking: data[16] || "-"
     };
 }
 
