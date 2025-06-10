@@ -133,12 +133,26 @@ export function InventoryTable({ section }: InventoryTableProps) {
     }
   }, [section, accessToken, sheetId])
 
-  const searchTerm = searchParams.get("q")?.toLowerCase() || ""
-  const data = searchTerm && headers.length > 0
-    ? allData.filter(item =>
-        headers.some(header => String(item[header] ?? "").toLowerCase().includes(searchTerm))
-      )
-    : allData
+  const searchTermQ1 = searchParams.get("q1")?.toLowerCase() || "";
+  const searchTermQ2 = searchParams.get("q2")?.toLowerCase() || "";
+
+  let datosFiltrados = allData;
+
+  if (searchTermQ1 && headers.length > 0) {
+    datosFiltrados = datosFiltrados.filter(item =>
+      headers.some(header => String(item[header] ?? "").toLowerCase().includes(searchTermQ1))
+    );
+  }
+
+  if (searchTermQ2 && headers.length > 0) {
+    datosFiltrados = datosFiltrados.filter(item =>
+      headers.some(header => String(item[header] ?? "").toLowerCase().includes(searchTermQ2))
+    );
+  }
+
+  // El resultado final es la variable que ha pasado por todos los filtros.
+  const data = datosFiltrados;
+
 
   const handleSave = async (item: any) => {
     if (!accessToken || !sheetId) return

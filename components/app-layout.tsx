@@ -82,8 +82,9 @@ export function AppLayout({ user, onLogout }: AppLayoutProps) {
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
         <header className="bg-slate-800 text-white p-4 flex justify-between items-center flex-shrink-0">
-          <div>
-            <SearchBar />
+          <div className="flex items-center space-x-4">
+            <SearchBar searchParamKey="q1" />
+            <SearchBar searchParamKey="q2" />
           </div>
           <div className="flex items-center space-x-4">
             <span className="text-sm font-medium">{user?.name}</span>
