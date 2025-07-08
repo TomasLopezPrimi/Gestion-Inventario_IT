@@ -16,12 +16,18 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { InventoryDialog } from "@/components/inventory-dialog"
-import { Pencil, Trash2, Plus, Columns, Filter } from "lucide-react"
+import { Pencil, Trash2, Plus, Columns, Filter, CalendarDays } from "lucide-react"
 
 interface InventoryTableProps {
   section: string
@@ -41,6 +47,8 @@ export function InventoryTable({ section }: InventoryTableProps) {
   const [visibleColumns, setVisibleColumns] = useState<{ [key: string]: boolean }>({})
   // Estado para los filtros por columna
   const [columnFilters, setColumnFilters] = useState<{ [key: string]: string[] }>({})
+  // Estado para el filtro de fecha
+  const [dateFilter, setDateFilter] = useState<{ year: string | null; month: string | null }>({ year: null, month: null });
   // Estado para la búsqueda dentro del dropdown de filtros
   const [filterSearch, setFilterSearch] = useState("")
 
@@ -81,6 +89,15 @@ export function InventoryTable({ section }: InventoryTableProps) {
         console.error("Error al procesar los filtros de columna desde localStorage", e);
       }
     }
+    // Cargar filtro de fecha
+    const savedDateFilterRaw = localStorage.getItem(`dateFilter_${section}`);
+    if (savedDateFilterRaw) {
+      try {
+        setDateFilter(JSON.parse(savedDateFilterRaw));
+      } catch (e) {
+        console.error("Error al procesar el filtro de fecha desde localStorage", e);
+      }
+    }
   }, [section])
 
   useEffect(() => {
@@ -93,8 +110,20 @@ export function InventoryTable({ section }: InventoryTableProps) {
     localStorage.setItem(`columnFilters_${section}`, JSON.stringify(columnFilters))
   }, [columnFilters, section])
 
+  useEffect(() => {
+    localStorage.setItem(`dateFilter_${section}`, JSON.stringify(dateFilter));
+  }, [dateFilter, section]);
+
 
   // --- LÓGICA DE FILTRADO Y DATOS ---
+
+  const { availableYears } = useMemo(() => {
+    if (!headers.includes('fecha_in')) {
+        return { availableYears: [] };
+    }
+    const years = [...new Set(allData.map(item => String(item.fecha_in).split('-')[0]))].filter(Boolean).sort((a, b) => b.localeCompare(a));
+    return { availableYears: years };
+  }, [allData, headers]);
   
   const data = useMemo(() => {
     let filtered = allData
@@ -123,8 +152,16 @@ export function InventoryTable({ section }: InventoryTableProps) {
       })
     }
 
+    // 3. Filtro por fecha
+    if (dateFilter.year) {
+      filtered = filtered.filter(item => item.fecha_in && String(item.fecha_in).startsWith(dateFilter.year!));
+    }
+    if (dateFilter.month) {
+      filtered = filtered.filter(item => item.fecha_in && String(item.fecha_in).split('-')[1] === dateFilter.month);
+    }
+
     return filtered
-  }, [allData, searchParams, headers, columnFilters])
+  }, [allData, searchParams, headers, columnFilters, dateFilter])
 
   const displayedHeaders = headers.filter(header => visibleColumns[header])
 
@@ -156,6 +193,42 @@ export function InventoryTable({ section }: InventoryTableProps) {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold text-white capitalize">{section}</h2>
         <div className="flex items-center gap-2">
+          {/* Botón de filtro de fecha */}
+          {headers.includes("fecha_in") && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="bg-slate-700 hover:bg-slate-600 text-white border-slate-600">
+                  <CalendarDays className="h-4 w-4 mr-2" />
+                  Fecha
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="bg-slate-800 text-white border-slate-700">
+                <DropdownMenuLabel>Filtrar por Fecha</DropdownMenuLabel>
+                <DropdownMenuSeparator className="bg-slate-700" />
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger>Año: {dateFilter.year || "Todos"}</DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent className="bg-slate-800 border-slate-700">
+                    <DropdownMenuRadioGroup value={dateFilter.year ?? ""} onValueChange={(value) => setDateFilter(prev => ({ ...prev, year: value }))}>
+                      {availableYears.map(year => <DropdownMenuRadioItem key={year} value={year}>{year}</DropdownMenuRadioItem>)}
+                    </DropdownMenuRadioGroup>
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger>Mes: {dateFilter.month || "Todos"}</DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent className="bg-slate-800 border-slate-700">
+                    <DropdownMenuRadioGroup value={dateFilter.month ?? ""} onValueChange={(value) => setDateFilter(prev => ({ ...prev, month: value }))}>
+                      {["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"].map(month => <DropdownMenuRadioItem key={month} value={month}>{month}</DropdownMenuRadioItem>)}
+                    </DropdownMenuRadioGroup>
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
+                <DropdownMenuSeparator className="bg-slate-700" />
+                <DropdownMenuItem onSelect={() => setDateFilter({ year: null, month: null })} className="text-red-400 focus:bg-red-900/50">
+                  Limpiar filtro
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+
           {/* Botón para seleccionar columnas */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
