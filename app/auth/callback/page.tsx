@@ -23,8 +23,6 @@ export default function GoogleCallback() {
           grant_type: "authorization_code",
         });
 
-        console.log("Enviando petición a Google con params:", params.toString());
-
         const res = await fetch("https://oauth2.googleapis.com/token", {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -32,7 +30,7 @@ export default function GoogleCallback() {
         });
 
         const data = await res.json();
-        console.log("Respuesta de Google:", data);
+        // console.log("Respuesta de Google:", data);
 
         if (!res.ok) throw new Error(data.error || "Error al obtener el token");
 
@@ -43,7 +41,7 @@ export default function GoogleCallback() {
         // Guarda el token y el usuario
         localStorage.setItem("googleAccessToken", data.access_token);
         const user = JSON.parse(atob(data.id_token.split(".")[1]));
-        console.log("Guardando usuario en localStorage:", user);
+        //console.log("Guardando usuario en localStorage:", user);
         localStorage.setItem("googleUser", JSON.stringify(user));
 
         window.location.href = "/";
