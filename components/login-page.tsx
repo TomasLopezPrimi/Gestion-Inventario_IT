@@ -1,20 +1,26 @@
 "use client"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { useGoogleAuth } from "@/hooks/useGoogleAuth";
 
 export function LoginPage() {
 
+  const {signIn} = useGoogleAuth()
   const handleGoogleLogin = () => {
-    const params = new URLSearchParams({
-      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
-      redirect_uri: process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI!,
-      response_type: "code",
-      scope: "openid email profile https://www.googleapis.com/auth/spreadsheets",
-      access_type: "offline",
-      prompt: "consent"
-    });
-    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
-  };
+    signIn()
+  }
+
+  // const handleGoogleLogin = () => {
+  //   const params = new URLSearchParams({
+  //     client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
+  //     redirect_uri: process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI!,
+  //     response_type: "code",
+  //     scope: "openid email profile https://www.googleapis.com/auth/spreadsheets",
+  //     access_type: "offline",
+  //     prompt: "consent"
+  //   });
+  //   window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
+  // };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 gap-6 bg-gradient-to-br from-indigo-500 via-purple-500 to-purple-600">
