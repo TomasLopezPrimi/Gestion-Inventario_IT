@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useEffect, FormEvent } from "react"
+import { useState, useEffect } from "react"
 import { useRouter, usePathname, useSearchParams } from "next/navigation"
 import { Input } from "@/components/ui/input"
 import { Search } from "lucide-react"

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState, useEffect } from "react"
+import { getNextId, getToday } from "@/helpers/auxiliares"
 
 interface InventoryDialogProps {
   isOpen: boolean
@@ -15,21 +16,6 @@ interface InventoryDialogProps {
   data?: any[] // datos actuales para calcular el nuevo ID
   equiposData?: any[] // datos de equipos para autocompletar marca/modelo
   section?: string // para saber si es gestion
-}
-
-function getNextId(headers: string[], data: any[]): number | string {
-  const idHeader = headers.find(h => /^id(_|$)/i.test(h))
-  if (!idHeader) return ""
-  const ids = data
-    .map(row => Number(row[idHeader]))
-    .filter(n => !isNaN(n))
-  if (ids.length === 0) return 1
-  return Math.max(...ids) + 1
-}
-
-function getToday() {
-  const d = new Date()
-  return d.toISOString().slice(0, 10)
 }
 
 const MOVIMIENTO_OPCIONES = ["Envío", "Retiro", "Cambio", "Mensajeria"]
@@ -92,7 +78,7 @@ export function InventoryDialog({
   // Validación de nro_serie para gestiones
   useEffect(() => {
     if (
-      mode === "create" &&
+      // mode === "create" &&
       section.toLowerCase().includes("gestion") &&
       formData["nro_serie"] &&
       equiposData.length > 0
