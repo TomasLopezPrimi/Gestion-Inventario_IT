@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 
 export default function GoogleCallback() {
   const [error, setError] = useState<string | null>(null);
@@ -38,10 +37,13 @@ export default function GoogleCallback() {
           throw new Error("No se recibió id_token en la respuesta");
         }
 
-        // Guarda el token y el usuario
+        // Guarda el token, el refresh token y el usuario
         localStorage.setItem("googleAccessToken", data.access_token);
+
+        const refreshToken = data.refresh_token ? data.refresh_token : null;
+        refreshToken ? localStorage.setItem("googleRefreshToken", refreshToken) : null;
+
         const user = JSON.parse(atob(data.id_token.split(".")[1]));
-        //console.log("Guardando usuario en localStorage:", user);
         localStorage.setItem("googleUser", JSON.stringify(user));
 
         window.location.href = "/";
