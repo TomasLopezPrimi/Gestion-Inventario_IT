@@ -1,33 +1,38 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
+import { useGoogleAuth } from "./useGoogleAuth"
 
-async function fetchWithAuth(url: string, options: RequestInit): Promise<Response> {
-  const accessToken = localStorage.getItem("googleAccessToken");
-  if (!accessToken) {
-    throw new Error("No hay token de acceso disponible.");
-  }
 
-  const optionsWithAuth = {
+async function fetchWithAuth(url: string, options: RequestInit, refreshAccessToken: () => Promise<string>) {
+  
+  let accessToken = localStorage.getItem("googleAccessToken");
+  let response = await fetch(url, {
     ...options,
     headers: {
       ...options.headers,
       Authorization: `Bearer ${accessToken}`,
     },
-  };
-
-  const response = await fetch(url, optionsWithAuth);
-
-  if (!response.ok) {
-    if (response.status === 401) {
-      // Usamos un alert simple para notificar al usuario.
-      // En una app más compleja, podrías usar un modal o un sistema de notificaciones.
-      alert("Tu sesión ha expirado. Por favor, cierra sesión y vuelve a ingresar para continuar.");
+  });
+  
+  if (response.status === 401) {
+    // Intentar refrescar el token
+    try {
+      accessToken = await refreshAccessToken();
+      response = await fetch(url, {
+        ...options,
+        headers: {
+          ...options.headers,
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+    } catch (e) {
+      // Si falla el refresh, forzar logout o pedir re-login
+      window.alert("Sesión expirada. Por favor, cerrá y volvé a iniciar sesión.")
+      throw new Error("Sesión expirada. Por favor, vuelve a iniciar sesión.");
     }
-    const errorData = await response.json().catch(() => ({ message: response.statusText }));
-    throw new Error(errorData.error?.message || `Error ${response.status}`);
   }
-
+  
   return response;
 }
 
@@ -37,8 +42,10 @@ export const useSheet = (section: string) => {
   const [loading, setLoading] = useState(false)
   const [equiposData, setEquiposData] = useState<any[]>([])
   
-  const sheetId = process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID
+  const { refreshAccessToken } = useGoogleAuth()
 
+  const sheetId = process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID
+  
   const fetchData = useCallback(async () => {
     const accessToken = localStorage.getItem("googleAccessToken")
     if (!accessToken || !sheetId) return
@@ -47,7 +54,7 @@ export const useSheet = (section: string) => {
     const sheetName = section.charAt(0).toUpperCase() + section.slice(1)
     
     try {
-      const res = await fetchWithAuth(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}`, {})
+      const res = await fetchWithAuth(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}`, {}, refreshAccessToken)
       const result = await res.json()
 
       if (result.values?.length > 1) {
@@ -86,7 +93,7 @@ export const useSheet = (section: string) => {
       if (!userData) throw new Error("No hay usuario autenticado")
       const user = JSON.parse(userData)
 
-      const res = await fetchWithAuth(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Registro`, {})
+      const res = await fetchWithAuth(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Registro`, {}, refreshAccessToken)
       const data = await res.json()
       const lastId = data.values ? data.values.length : 0
       
@@ -105,7 +112,7 @@ export const useSheet = (section: string) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ values: [newRecord] }),
-      })
+      }, refreshAccessToken)
     } catch (error) {
       console.error("Error registrando acción:", error)
     }
@@ -122,10 +129,10 @@ export const useSheet = (section: string) => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ values: [values] }),
-        })
+        }, refreshAccessToken)
         await registerAction("crear", null, item)
       } else {
-        const res = await fetchWithAuth(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}`, {})
+        const res = await fetchWithAuth(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}`, {}, refreshAccessToken)
         const sheetData = await res.json()
         if (!sheetData.values) throw new Error("No se pudieron obtener los datos de la hoja")
         
@@ -148,7 +155,7 @@ export const useSheet = (section: string) => {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ values: [values] }),
-        })
+        }, refreshAccessToken)
         await registerAction("modificar", originalItem, item)
       }
       await fetchData()
@@ -163,12 +170,12 @@ export const useSheet = (section: string) => {
     const sheetName = section.charAt(0).toUpperCase() + section.slice(1)
     
     try {
-      const sheetRes = await fetchWithAuth(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}?fields=sheets.properties`, {})
+      const sheetRes = await fetchWithAuth(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}?fields=sheets.properties`, {}, refreshAccessToken)
       const sheetData = await sheetRes.json()
       const sheet = sheetData.sheets.find((s: any) => s.properties.title === sheetName)
       if (!sheet) throw new Error("No se encontró la hoja")
 
-      const res = await fetchWithAuth(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}`, {})
+      const res = await fetchWithAuth(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}`, {}, refreshAccessToken)
       const data = await res.json()
       if (!data.values) throw new Error("No se pudieron obtener los datos de la hoja")
       
@@ -200,7 +207,7 @@ export const useSheet = (section: string) => {
             },
           }],
         }),
-      })
+      }, refreshAccessToken)
       await registerAction("eliminar", originalItem, null)
       await fetchData()
     } catch (error) {

@@ -21,6 +21,10 @@ interface Window {
         ) => void
         disableAutoSelect: () => void
       }
+      oauth2?: {
+        initTokenClient: (config: any) => any
+        revoke: (token: string, callback: () => void) => void
+      }
     }
   }
-} 
+}
