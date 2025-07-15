@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { useGoogleAuth } from "./useGoogleAuth"
+import { procesarDataSheet } from "@/helpers/auxiliares";
+import { DataSheet } from "@/types/google";
 
 
 async function fetchWithAuth(url: string, options: RequestInit, refreshAccessToken: () => Promise<string>) {
@@ -40,7 +42,7 @@ export const useSheet = (section: string) => {
   const [data, setData] = useState<any[]>([])
   const [headers, setHeaders] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
-  const [equiposData, setEquiposData] = useState<any[]>([])
+  const [equiposData, setEquiposData] = useState<DataSheet[]>([])
   
   const { refreshAccessToken } = useGoogleAuth()
 
@@ -56,6 +58,17 @@ export const useSheet = (section: string) => {
     try {
       const res = await fetchWithAuth(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}`, {}, refreshAccessToken)
       const result = await res.json()
+
+      if (section != "equipos") {
+        try {
+          const equiposRes = await fetchWithAuth(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Equipos`, {}, refreshAccessToken)
+          const equiposJson = await equiposRes.json()
+          const equiposData = procesarDataSheet(equiposJson.values).data
+          setEquiposData(equiposData)
+        } catch (error) {
+          console.error("Error fetching equipos data:", error)
+        }
+      }
 
       if (result.values?.length > 1) {
         const normalizedHeaders = result.values[0].map((h: string) => h.toLowerCase())

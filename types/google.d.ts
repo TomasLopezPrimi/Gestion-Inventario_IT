@@ -28,3 +28,11 @@ interface Window {
     }
   }
 }
+
+
+type DataSheet = {
+  headers: string[]
+  [key: string]: any
+}
+
+export type { DataSheet }

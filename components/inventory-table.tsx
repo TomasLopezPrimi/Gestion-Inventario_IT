@@ -165,8 +165,6 @@ export function InventoryTable({ section }: InventoryTableProps) {
 
   const displayedHeaders = headers.filter(header => visibleColumns[header])
 
-  // --- MANEJADORES DE EVENTOS ---
-
   const handleSave = async (item: any) => {
     await saveItem(item, dialogState.mode as "create" | "edit")
     setDialogState({ isOpen: false, mode: "create" })
@@ -193,6 +191,7 @@ export function InventoryTable({ section }: InventoryTableProps) {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold text-white capitalize">{section}</h2>
         <div className="flex items-center gap-2">
+
           {/* Botón de filtro de fecha */}
           {headers.includes("fecha_in") && (
             <DropdownMenu>
@@ -267,6 +266,7 @@ export function InventoryTable({ section }: InventoryTableProps) {
           <Button onClick={() => setDialogState({ isOpen: true, mode: "create" })} className="bg-teal-600 hover:bg-teal-700 text-white">
             <Plus className="h-4 w-4 mr-2" /> Nuevo
           </Button>
+
         </div>
       </div>
 
