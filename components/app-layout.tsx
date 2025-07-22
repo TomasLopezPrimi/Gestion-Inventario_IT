@@ -6,6 +6,9 @@ import { Button } from "@/components/ui/button"
 import { ChevronDown, Users, Briefcase, Monitor, Plus } from "lucide-react"
 import { InventoryTable } from "@/components/inventory-table"
 import { SearchBar } from "@/components/search-bar"
+import { Section } from "@/types/google"
+// import { useAuth } from "@/hooks/useAuth"
+import { Dashboard } from "./dashboard"
 
 interface User {
   name: string
@@ -29,10 +32,13 @@ export function AppLayout({ user, onLogout }: AppLayoutProps) {
   const pathname = usePathname()
   const [showTables, setShowTables] = useState(true)
 
-  const getActiveSection = () => {
+  // const {usuarioEsValido} = useAuth()
+
+  const getActiveSection: ( () => Section ) = () => {
     if (pathname.includes("/gestiones")) return "gestiones"
     if (pathname.includes("/usuarios")) return "usuarios"
     if (pathname.includes("/equipos")) return "equipos"
+    if (pathname.includes("/dashboard")) return "dashboard"
     return "equipos"
   }
   const activeSection = getActiveSection()
@@ -42,15 +48,22 @@ export function AppLayout({ user, onLogout }: AppLayoutProps) {
     if (pathname === "/usuarios") return <InventoryTable section="usuarios" />
     if (pathname === "/gestiones") return <InventoryTable section="gestiones" />
     if (pathname === "/search") return <InventoryTable section="search" />
+    if (pathname === "/dashboard") return <Dashboard />
     return <InventoryTable section="equipos" />
   }
 
+  // const handleTest = () => {
+  //   usuarioEsValido("tomas.lopez")
+  // }
+
   return (
     <div className="h-screen bg-slate-700 flex overflow-hidden">
+
       {/* Sidebar */}
+      
       <div className="w-64 bg-teal-600 text-white flex-shrink-0">
-        <div className="p-4">
-          <h1 className="text-xl font-bold">Inventario</h1>
+        <div className="p-4 border-b border-white/10 text-center">
+          <h1 className="text-xl font-semibold tracking-wider mb-4">Inventario</h1>
         </div>
         <nav className="mt-8">
           <div className="px-4">
@@ -67,6 +80,7 @@ export function AppLayout({ user, onLogout }: AppLayoutProps) {
                   <button
                     key={tab.key}
                     onClick={() => router.push(`/${tab.key}`)}
+                    
                     className={`flex items-center w-full px-3 py-2 text-sm rounded ${activeSection === tab.key ? "bg-teal-700" : "hover:bg-teal-700"}`}
                   >
                     {tab.icon}
@@ -76,11 +90,29 @@ export function AppLayout({ user, onLogout }: AppLayoutProps) {
               </div>
             )}
           </div>
+          
+          <button 
+            // className="mt-8 text-center font-medium cursor-pointer w-4/6 select-none px-3 py-2 text-xl rounded hover:bg-teal-700"
+            className="mt-8 w-5/6 mx-auto flex items-center justify-center gap-2 px-4 py-2 text-lg font-bold rounded-lg bg-gradient-to-r from-teal-500 to-teal-700 shadow-lg hover:from-teal-400 hover:to-teal-600 transition-all duration-200 border-2 border-white/10"
+  
+            onClick={() => router.push(`/dashboard`)}
+          >
+            Dashboard
+          </button>
+
+          {/* <button
+            className=" w-15 px-3 py-2 text-xl text-white rounded font-medium cursor-pointer select-none m-4 hover:bg-slate-500"
+            onClick={handleTest}
+          > Test auth AppScript</button> */}
+
         </nav>
       </div>
+
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
+
         {/* Header */}
+
         <header className="bg-slate-800 text-white p-4 flex justify-between items-center flex-shrink-0">
           <div className="flex items-center space-x-4">
             <SearchBar searchParamKey="q1" />
@@ -93,8 +125,10 @@ export function AppLayout({ user, onLogout }: AppLayoutProps) {
             </Button>
           </div>
         </header>
+
         {/* Content Area */}
-        <div className="flex-1 p-6 overflow-hidden">
+
+        <div className="flex-1 p-6 overflow-y-auto">
           {renderContent()}
         </div>
       </div>

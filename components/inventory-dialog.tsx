@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState, useEffect } from "react"
 import { getNextId, getToday } from "@/helpers/auxiliares"
+import { Section } from "@/types/google"
 
 interface InventoryDialogProps {
   isOpen: boolean
@@ -14,8 +15,8 @@ interface InventoryDialogProps {
   onSave: (item: any) => void
   onDelete?: () => void
   data?: any[] // datos actuales para calcular el nuevo ID
-  equiposData?: any[] // datos de equipos para autocompletar marca/modelo
-  section?: string // para saber si es gestion
+  equiposData?: any[] // datos de equipos para autocompletar marca/modelo, etc
+  section?: Section // para saber si es gestion
 }
 
 const MOVIMIENTO_OPCIONES = ["Envío", "Retiro", "Cambio", "Mensajeria"]
@@ -68,7 +69,8 @@ export function InventoryDialog({
           ...prev,
           marca: equipo["marca"] || prev["marca"],
           modelo: equipo["modelo"] || prev["modelo"],
-          tipo_de_dispositivo: equipo["tipo_de_dispositivo"] || prev["tipo_de_dispositivo"]
+          tipo_de_dispositivo: equipo["tipo_de_dispositivo"] || prev["tipo_de_dispositivo"],
+          origen: equipo["ubicacion_actual"] || prev["ubicacion_actual"],
         }))
       }
     }

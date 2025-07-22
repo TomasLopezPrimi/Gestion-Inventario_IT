@@ -35,6 +35,7 @@ function procesarDataSheet (values: string[][] | null | undefined ) {
   });
 
   const resultado = { headers: normalizedHeaders, data: items };
+  // console.log(resultado)
   return resultado
 };
 

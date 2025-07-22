@@ -35,4 +35,6 @@ type DataSheet = {
   [key: string]: any
 }
 
-export type { DataSheet }
+type Section = "gestiones" | "equipos" | "usuarios" | "search" | "dashboard" | ""
+
+export type { DataSheet, Section, Window }

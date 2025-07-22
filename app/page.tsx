@@ -7,7 +7,6 @@ import { LoginPage } from "@/components/login-page"
 interface User {
   email: string;
   name: string;
-  picture?: string;
 }
 
 export default function Home() {

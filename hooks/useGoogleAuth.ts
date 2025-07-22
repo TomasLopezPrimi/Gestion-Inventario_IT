@@ -48,7 +48,7 @@ export function useGoogleAuth() {
     }
   }, [initializeTokenClient])
 
-const signIn = () => {
+  const signIn = () => {
     const params = new URLSearchParams({
       client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
       redirect_uri: process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI!,

@@ -28,9 +28,10 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { InventoryDialog } from "@/components/inventory-dialog"
 import { Pencil, Trash2, Plus, Columns, Filter, CalendarDays } from "lucide-react"
+import { Section } from "@/types/google"
 
 interface InventoryTableProps {
-  section: string
+  section: Section
 }
 
 export function InventoryTable({ section }: InventoryTableProps) {
