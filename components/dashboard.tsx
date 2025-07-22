@@ -268,6 +268,7 @@ export function Dashboard() {
                 <thead>
                   <tr className="border-b border-slate-700">
                     <th className="text-left py-3 px-4 font-medium text-slate-400">Nro Serie</th>
+                    <th className="text-left py-3 px-4 font-medium text-slate-400">Tipo</th>
                     <th className="text-left py-3 px-4 font-medium text-slate-400">Modelo</th>
                     <th className="text-left py-3 px-4 font-medium text-slate-400">Ubicacion actual</th>
                     <th className="text-left py-3 px-4 font-medium text-slate-400">Estado</th>
@@ -277,6 +278,7 @@ export function Dashboard() {
                   {equiposData.slice(equiposData.length - 5, equiposData.length).map((equipo) => (
                     <tr key={equipo.Id_Equipo} className="border-b border-slate-700">
                       <td className="py-3 px-4">{equipo.nro_serie}</td>
+                      <td className="py-3 px-4">{equipo.tipo_de_dispositivo}</td>
                       <td className="py-3 px-4">{equipo.modelo}</td>
                       <td className="py-3 px-4">{equipo.ubicacion_actual}</td>
                       <td className="py-3 px-4">
