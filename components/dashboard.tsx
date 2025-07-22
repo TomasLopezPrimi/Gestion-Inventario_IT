@@ -55,7 +55,8 @@ export function Dashboard() {
     const usuariosData = useSheet("usuarios").data
     const gestionesData = useSheet("gestiones").data
 
-    // console.log(gestionesData)
+    // const fecha = gestionesData[0].fecha_in
+    // console.log(new Date(fecha))
     const equiposNuevos = equiposData.filter(equipo => equipo.ubicacion_actual === "Saires" && equipo.estado === "Nuevo")
 
     const totalLaptops = equiposData.filter(equipo => equipo.tipo_de_dispositivo === "Laptop")
@@ -63,6 +64,40 @@ export function Dashboard() {
     const equiposAReparar = equiposData.filter(equipo => equipo.resolucion === "Reparar")
 
     const usuariosActivos = usuariosData.filter(usuario => usuario.status === "Activo")
+
+    function contarPorPropiedad(array, propiedad) {
+        const conteoObjeto = array.reduce((acumulador, elemento) => {
+            let valor = elemento[propiedad];
+
+            if (propiedad === 'fecha_in' && valor) {
+            const fecha = new Date(valor);
+            if (!isNaN(fecha.getTime())) {
+                valor = fecha.getFullYear();
+            } else {
+                valor = 'Fecha inválida';
+            }
+            }
+
+            if (valor !== undefined) {
+            acumulador[valor] = (acumulador[valor] || 0) + 1;
+            }
+            return acumulador;
+        }, {});
+
+        return Object.entries(conteoObjeto).map(([valor, cantidad]) => {
+            const valorFinal = (propiedad === 'fecha_in' && !isNaN(Number(valor)))
+            ? Number(valor)
+            : valor;
+
+            return {
+            [propiedad]: valorFinal,
+            cantidad: cantidad,
+            };
+        });
+    }
+
+    const gestionesPorMes = contarPorPropiedad(gestionesData, "fecha_in")
+    console.log(gestionesPorMes)
 
     
 
@@ -73,11 +108,11 @@ export function Dashboard() {
         <h1 className="text-2xl font-bold text-white">Dashboard</h1>
         <div className="flex space-x-2">
           <select className="bg-slate-700 text-white rounded-md px-3 py-1 text-sm border border-slate-600">
-            <option>Último mes</option>
-            <option>Último trimestre</option>
-            <option>Último año</option>
+            <option>Último mes (inactivo)</option>
+            <option>Último trimestre (inactivo)</option>
+            <option>Último año (inactivo)</option>
           </select>
-          <button className="bg-teal-600 hover:bg-teal-700 text-white rounded-md px-3 py-1 text-sm">Actualizar</button>
+          <button className="bg-teal-600 hover:bg-teal-700 text-white rounded-md px-3 py-1 text-sm">Actualizar (inactivo)</button>
         </div>
       </div>
 
@@ -118,14 +153,14 @@ export function Dashboard() {
         {/* Gráfico de barras */}
         <Card className="bg-slate-800 border-slate-700 text-white">
           <CardHeader>
-            <CardTitle>Ventas vs Compras</CardTitle>
-            <CardDescription className="text-slate-400">Comparativa de los últimos 6 meses</CardDescription>
+            <CardTitle>Gestiones por mes</CardTitle>
+            <CardDescription className="text-slate-400">Envios/retiros </CardDescription>
           </CardHeader>
           <CardContent className="p-4">
             <div className="h-80 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
-                  data={barChartData}
+                  data={gestionesPorMes}
                   margin={{
                     top: 20,
                     right: 30,
@@ -134,7 +169,7 @@ export function Dashboard() {
                   }}
                 >
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                  <XAxis dataKey="name" stroke="#9CA3AF" />
+                  <XAxis dataKey="fecha_in" stroke="#9CA3AF" />
                   <YAxis stroke="#9CA3AF" />
                   <Tooltip
                     contentStyle={{ backgroundColor: "#1F2937", borderColor: "#374151", color: "#F9FAFB" }}
@@ -142,8 +177,8 @@ export function Dashboard() {
                     labelStyle={{ color: "#F9FAFB" }}
                   />
                   <Legend wrapperStyle={{ color: "#F9FAFB" }} />
-                  <Bar dataKey="ventas" fill="#0D9488" />
-                  <Bar dataKey="compras" fill="#0369A1" />
+                  <Bar dataKey="cantidad" fill="#0D9488" />
+                  {/* <Bar dataKey="compras" fill="#0369A1" /> */}
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -151,7 +186,7 @@ export function Dashboard() {
         </Card>
 
         {/* Gráfico de líneas */}
-        <Card className="bg-slate-800 border-slate-700 text-white">
+        {/* <Card className="bg-slate-800 border-slate-700 text-white">
           <CardHeader>
             <CardTitle>Actividad de Usuarios</CardTitle>
             <CardDescription className="text-slate-400">Usuarios y sesiones por semana</CardDescription>
@@ -183,10 +218,10 @@ export function Dashboard() {
               </ResponsiveContainer>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
 
         {/* Gráfico circular */}
-        <Card className="bg-slate-800 border-slate-700 text-white">
+        {/* <Card className="bg-slate-800 border-slate-700 text-white">
           <CardHeader>
             <CardTitle>Distribución de Inventario</CardTitle>
             <CardDescription className="text-slate-400">Distribución por categoría</CardDescription>
@@ -196,16 +231,16 @@ export function Dashboard() {
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
-                    data={pieChartData}
+                    data={sarasa}
                     cx="50%"
                     cy="50%"
                     labelLine={false}
-                    label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                    label={({ tipo_de_dispositivo, percent }) => `${tipo_de_dispositivo}: ${(percent * 100).toFixed(0)}%`}
                     outerRadius={100}
                     fill="#8884d8"
-                    dataKey="value"
+                    dataKey="cantidad"
                   >
-                    {pieChartData.map((entry, index) => (
+                    {sarasa.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
@@ -219,7 +254,7 @@ export function Dashboard() {
               </ResponsiveContainer>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
 
         {/* Tabla de resumen */}
         <Card className="bg-slate-800 border-slate-700 text-white">
@@ -232,35 +267,29 @@ export function Dashboard() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-slate-700">
-                    <th className="text-left py-3 px-4 font-medium text-slate-400">ID</th>
-                    <th className="text-left py-3 px-4 font-medium text-slate-400">Nombre</th>
-                    <th className="text-left py-3 px-4 font-medium text-slate-400">Tipo</th>
+                    <th className="text-left py-3 px-4 font-medium text-slate-400">Nro Serie</th>
+                    <th className="text-left py-3 px-4 font-medium text-slate-400">Modelo</th>
+                    <th className="text-left py-3 px-4 font-medium text-slate-400">Ubicacion actual</th>
                     <th className="text-left py-3 px-4 font-medium text-slate-400">Estado</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {[
-                    { id: "EQ-1234", nombre: "Laptop Dell XPS", tipo: "Portátil", estado: "Activo" },
-                    { id: "EQ-1235", nombre: 'Monitor LG 27"', tipo: "Monitor", estado: "Activo" },
-                    { id: "EQ-1236", nombre: "Teclado Logitech", tipo: "Periférico", estado: "En reparación" },
-                    { id: "EQ-1237", nombre: "Servidor HP", tipo: "Servidor", estado: "Activo" },
-                    { id: "EQ-1238", nombre: "Router Cisco", tipo: "Red", estado: "Inactivo" },
-                  ].map((item, i) => (
-                    <tr key={i} className="border-b border-slate-700">
-                      <td className="py-3 px-4">{item.id}</td>
-                      <td className="py-3 px-4">{item.nombre}</td>
-                      <td className="py-3 px-4">{item.tipo}</td>
+                  {equiposData.slice(0, 5).map((equipo) => (
+                    <tr key={equipo.Id_Equipo} className="border-b border-slate-700">
+                      <td className="py-3 px-4">{equipo.nro_serie}</td>
+                      <td className="py-3 px-4">{equipo.modelo}</td>
+                      <td className="py-3 px-4">{equipo.ubicacion_actual}</td>
                       <td className="py-3 px-4">
                         <span
                           className={`inline-block px-2 py-1 rounded-full text-xs ${
-                            item.estado === "Activo"
+                            equipo.estado === "Nuevo"
                               ? "bg-green-900 text-green-300"
-                              : item.estado === "Inactivo"
+                              : equipo.estado === "Roto"
                                 ? "bg-red-900 text-red-300"
                                 : "bg-yellow-900 text-yellow-300"
                           }`}
                         >
-                          {item.estado}
+                          {equipo.estado}
                         </span>
                       </td>
                     </tr>
