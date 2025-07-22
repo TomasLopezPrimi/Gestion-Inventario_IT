@@ -274,7 +274,7 @@ export function Dashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {equiposData.slice(0, 5).map((equipo) => (
+                  {equiposData.slice(equiposData.length - 5, equiposData.length).map((equipo) => (
                     <tr key={equipo.Id_Equipo} className="border-b border-slate-700">
                       <td className="py-3 px-4">{equipo.nro_serie}</td>
                       <td className="py-3 px-4">{equipo.modelo}</td>
